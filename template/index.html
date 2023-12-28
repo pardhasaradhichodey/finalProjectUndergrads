@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>MediApp</title>
+  <meta charset="utf-8">
+  {% load static %}
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="{% static 'node_modules\bootstrap\dist\css\bootstrap.min.css' %}" >
+    <link rel="stylesheet" href="{% static 'node_modules/font-awesome/css/font-awesome.min.css' %}">
+    <link rel="stylesheet" href="{% static 'node_modules/bootstrap-social/bootstrap-social.css' %}">
+  <link rel="stylesheet" href="{% static '/css/styles.css' %}">
+  <style>
+      .errormessage{
+          font-weight: bold;
+          color: red;
+      }
+  </style>
+  <script src=
+    "https://smtpjs.com/v3/smtp.js">
+  </script>
+  <script>
+      var c=Math.floor(100000+Math.random()*900000);
+      console.log(c);
+      function MailSend(){
+        var x=document.getElementById('emailid').value;
+        alert(x);
+        if(x==''){
+            alert('Enter your email Id');
+            return false;
+        }
+        Email.send({
+        Host: "smtp.live.com",
+        Username: "17341A0536@gmrit.edu.in",
+        Password: "Pardhu@1234",
+        To: x,
+        From: "17341A0536@gmrit.edu.in",
+        Subject: "otp for CoviRay",
+        Body: "Otp is"+c,
+      })
+        .then(function (message) {
+          alert("mail sent successfully")
+        });
+        var textbox=document.getElementById('otp');
+        textbox.style.display='block';
+        var button1=document.getElementById('verify');
+        button1.style.display='block';
+        return false;
+      }
+      function CheckOtp(){
+          var m=document.getElementById('otp').value;
+          if(c==m){
+            var button1=document.getElementById('verify');
+            button1.innerHTML="Verified!";
+            button1.disabled=true;
+            var textbox=document.getElementById('otp');
+            textbox.style.display='none';
+            var email=document.getElementById('emailid');
+            email.readonly=true;
+            var mail=document.getElementById('otpbutton');
+            mail.style.display='none';
+
+          }
+          else{
+              alert('Re-enter otp');
+          }
+      }
+      function MyPass(){
+          
+      }
+      function FormCheck(){
+        var regex = /[^A-Za-z ]/g;
+        var phonRegex=/[^0-9]/g;
+        var name1=document.getElementById('name').value;
+        var email1=document.getElementById('verify').innerHTML;
+        var phone1=document.getElementById('phonenum').value;
+        var pass=document.getElementById('password').value;
+        var pass1=document.getElementById('confirmpassword').value;
+        var k=0;
+        if(name1.match(regex)!=null){
+            document.getElementById('nameError').innerHTML="<i class='fa fa-exclamation-triangle' aria-hidden='true'></i>Name Cannot have numbers or Special Characters";
+            k=1;
+        }
+        else if(name1.length<3){
+            document.getElementById('nameError').innerHTML="<i class='fa fa-exclamation-triangle' aria-hidden='true'></i>Name should be greater than 2 characters";
+        }
+        else{
+            document.getElementById('nameError').innerHTML='';
+        }
+        if(email1!='Verified!'){
+            document.getElementById('emailError').innerHTML="<i class='fa fa-exclamation-triangle' aria-hidden='true'></i>Verify Your Email";
+            k=1;
+        }
+        else{
+            document.getElementById('emailError').innerHTML='';
+        }
+        if(phone1.length!=10 || phone1.match(phonRegex)!=null){
+            document.getElementById('PhoneError').innerHTML="<i class='fa fa-exclamation-triangle' aria-hidden='true'></i>Invalid Phone Number";
+            k=1;
+        }
+        else{
+            document.getElementById('PhoneError').innerHTML='';
+        }
+        if(pass.length<8){
+            document.getElementById('passError').innerHTML="<i class='fa fa-exclamation-triangle' aria-hidden='true'></i>Password length should be 8 or greater";
+            k=1;
+        }
+        else{
+            document.getElementById('passError').innerHTML='';
+        }
+        if(pass!=pass1){
+            document.getElementById('pass1Error').innerHTML="<i class='fa fa-exclamation-triangle' aria-hidden='true'></i>Passwords mismatch!";
+            k=1;
+        }
+        else{
+            document.getElementById('pass1Error').innerHTML='';
+        }
+        if(k==1)
+        return false;
+        else
+        return true;
+      }
+      function getLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(showPosition);
+            } else {
+                document.getElementById("Label1").value = "Geolocation is not supported by this browser.";
+            }
+            return false;
+        }
+      function showPosition(position) {
+            document.getElementById("latitude").value = position.coords.latitude
+            document.getElementById("longitude").value = position.coords.longitude;
+        }
+  </script>
+</head>
+<body>
+    <nav class="navbar navbar-dark navbar-expand-sm  fixed-top">
+        <div class="container">
+                
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#Navbar">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <a class="navbar-brand mr-auto" href="#"><img src="{% static 'img/logo1.jpeg' %}" height="41" width="41"></a>
+            <div class="collapse navbar-collapse" id="Navbar">
+                    <ul class="navbar-nav mr-auto">
+                            <li class="nav-item active"><a class="nav-link" href="#"><span class="fa fa-home"></span> Home</a></li>
+                        </ul>
+            </div>
+            
+        </div>
+    </nav>
+    <header class="jumbotron">
+        <div class="container">
+            <div class="row row-header">
+                <div class="col-12 col-sm-6">
+                    <h1 style="color:#668cff;font-size: 45px;">CoviRay</h1>
+                    <p style="color:#e64d00;">A healthcare system for covid19</p>
+                </div>
+                <div class="col-12 col-sm-3 align-self-center">
+                        <!--<img src="{% static 'img/logo1.jpeg' %}"  height="141" width="141">-->
+    
+                    </div>
+                <div class="col-12 col-sm-3">
+                        
+                </div>
+            </div>
+        </div>
+    </header>
+    <div class="container">
+        <div class="row row-content">
+            <div class="col col-5" style="border:1px solid black;">
+                <h1 style="text-align: center;">Sign Up</h1><br>
+                <form onsubmit="return FormCheck()" action="register" method="POST">
+                    {% csrf_token %}
+                    <div class="form-group row">
+                        <label for="firstname" class="col-md-2 col-form-label">Full Name</label>
+                        <div class="col-md-10 ">
+                            <input type="text" class="form-control" id="name" name="name" placeholder="Full Name" required>
+                        </div> 
+                        <div class="col-md-10">
+                            <p><span class="errormessage" id="nameError"></span></p>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="emailid" class="col-md-2 col-form-label">Email</label>
+                        <div class="col-md-6 ">
+                            <input type="email" class="form-control" id="emailid" name="emailid" placeholder="Email">
+                        </div> 
+                        <div class="col-md-4">
+                            <button class="btn btn-primary" id="otpbutton" onclick="return MailSend()">
+                                Send Otp
+                            </button>
+                        </div>
+                        <div class="col-md-10">
+                            <p><span class="errormessage" id="emailError"></span></p>
+                        </div>
+                        <div class="col-md=4 offset-md-2">
+                            <input type="text" class="form-control" id="otp" name="otp" placeholder="6 digits code" style="display: none;">
+                        </div>
+                        <div class="col-md-4">
+                            <button class="btn btn-primary" id="verify" onclick="return CheckOtp()" style="display: none;">
+                                Verify
+                            </button>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="phonenum" class="col-12 col-md-2 col-form-label">Contact Number:</label>
+                        <div class="col col-md-10 ">
+                            <input type="text" class="form-control" id="phonenum" name="phonenum" placeholder="Phone Number">
+                        </div> 
+                        <div class="col-md-10">
+                            <p><span class="errormessage" id="PhoneError"></span></p>
+                        </div>
+                       
+                    </div>
+                    <div class="form-group row">
+                        <label for="password" class="col-md-3 col-form-label">Password</label>
+                        <div class="col-md-9 ">
+                            <input type="password" class="form-control" id="password" name="password" placeholder="Password" >
+                        </div> 
+                        <div class="col-md-10">
+                            <p><span class="errormessage" id="passError"></span></p>
+                        </div>
+                    </div>
+                    
+                    
+                    <div class="form-group row">
+                        <label for="password" class="col-md-3 col-form-label">Re-Enter Password:</label>
+                        <div class="col-md-9 ">
+                            <input type="password" class="form-control" id="confirmpassword" name="confirmpassword" placeholder="Confirm Password">
+                        </div> 
+                        <div class="col-md-10">
+                            <p><span class="errormessage" id="pass1Error"></span></p>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col col-md-4">
+                            <input type="text" class="form-control" id="latitude" name="latitude" readonly>
+                        </div> 
+                        <div class="col col-md-4">
+                            <input type="text" class="form-control" id="longitude" name="longitude" readonly>
+                        </div> 
+                        <div class="col-md-4">
+                            
+                            <button  class="btn btn-primary" onclick="return getLocation()">
+                                get Location
+                            </button>
+                        </div> 
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="offset-md-4 col-md-4">
+                            <button type="submit" class="btn btn-primary" >
+                                Register
+                            </button>
+                        </div> 
+                    </div>
+                </form>
+            </div>
+            <div class="col col-5 offset-md-2" style="border:1px solid black;">
+                <h1 style="text-align: center;">Login</h1>
+                <br><br>
+                <form action="login" method="POST">
+                    {% csrf_token %}
+                    <div class="form-group row">
+                        <label for="email" class="col-md-3 col-form-label">Email</label>
+                        <div class="col-md-9">
+                            <input type="email" class="form-control" id="email" name="email" placeholder="Email">
+                        </div> 
+                    </div>
+                    <br><br>
+                    <div class="form-group row">
+                        <label for="password" class="col-md-3 col-form-label">Password</label>
+                        <div class="col-md-9 ">
+                            <input type="password" class="form-control" id="passw" name="passw" placeholder="Password">
+                        </div> 
+                    </div>
+                    <br>
+                    <div class="form-group row">
+                        <div class="offset-md-4 col-md-4">
+                            <button type="submit" class="btn btn-primary" >
+                                login
+                            </button>
+                        </div> 
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script>
+        window.watsonAssistantChatOptions = {
+            integrationID: "568d76d8-834d-4e4b-b49d-92aeb2debe4c", // The ID of this integration.
+            region: "eu-gb", // The region your integration is hosted in.
+            serviceInstanceID: "a3d9da22-2cb2-4bda-b6e2-901369257af9", // The ID of your service instance.
+            onLoad: function(instance) { instance.render(); }
+          };
+        setTimeout(function(){
+          const t=document.createElement('script');
+          t.src="https://web-chat.global.assistant.watson.appdomain.cloud/loadWatsonAssistantChat.js";
+          document.head.appendChild(t);
+        });
+      </script>
+    <script src="{% static 'node_modules/jquery/dist/jquery.slim.min.js' %}"></script>
+    <script src="{% static 'node_modules/popper.js/dist/umd/popper.min.js' %}"></script>
+    <script src="{% static 'node_modules/bootstrap/dist/js/bootstrap.min.js' %}"></script>
+</body>
+</html>

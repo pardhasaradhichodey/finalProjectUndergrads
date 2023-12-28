@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+  {% load static %}
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="{% static 'node_modules\bootstrap\dist\css\bootstrap.min.css' %}" >
+    <link rel="stylesheet" href="{% static 'node_modules/font-awesome/css/font-awesome.min.css' %}">
+    <link rel="stylesheet" href="{% static 'node_modules/bootstrap-social/bootstrap-social.css' %}">
+  <link rel="stylesheet" href="{% static '/css/styles.css' %}">
+    <title>Book a Test</title>
+    <script>
+        function dateSet(){
+            x=document.getElementById('slotdate');
+            y=new Date();
+            d=y.getDate();
+            m=y.getMonth()+1;
+            year=y.getFullYear();
+            if(m<10)
+            x.min=year.toString()+'-0'+m.toString()+'-'+d.toString();
+            else
+            x.min=year.toString()+'-'+m.toString()+'-'+d.toString();
+            y.setDate(y.getDate()+14);
+            d=y.getDate();
+            m=y.getMonth()+1;
+            year=y.getFullYear();
+            if(m<10)
+            x.max=year.toString()+'-0'+m.toString()+'-'+d.toString();
+            else
+            x.max=year.toString()+'-'+m.toString()+'-'+d.toString();
+        }
+    </script>
+</head>
+<body onload="dateSet()">
+    <nav class="navbar navbar-dark navbar-expand-sm  fixed-top">
+        <div class="container">
+                
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#Navbar">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <a class="navbar-brand mr-auto" href="#"><img src="{% static 'img/logo.png' %}" height="41" width="41"></a>
+            <div class="collapse navbar-collapse" id="Navbar">
+                    <ul class="navbar-nav mr-auto">
+                        <li class="nav-item"><a class="nav-link" href="./dashboard"><span class="fa fa-home"></span> Dashboard</a></li>
+                        <li class="nav-item"><a class="nav-link active" href="#">Book a Test</a></li>
+                        <li class="nav-item"><a class="nav-link" href="logout">logout</a></li>
+                    </ul>
+            </div>    
+        </div>
+    </nav>
+    <div class="container">
+        <div class="row row-content">
+            <div class="col-12 col-sm-6">
+                <form action="TestBook" method="POST">
+                    {% csrf_token %}
+                    <div class="form-group row">
+                        <label class="col-md-4 col-form-label">Select Test:</label>
+                        <select name="testname">
+                            {% if testlists %}
+                            {% for i in testlists %}
+                            <option value="{{ i.TestId }}">{{ i.name }}</option>
+                            {% endfor %}
+                            {% endif %}
+                        </select>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-4 col-form-label">Select Date:</label>
+                        <div class="col-md-8 ">
+                            <input type="date" name="SlotDate" id="slotdate" required/>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="offset-md-2 col-md-10">
+                            <button type="submit" class="btn btn-primary" >
+                                Search
+                            </button>
+                        </div> 
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script src="{% static 'node_modules/jquery/dist/jquery.slim.min.js' %}"></script>
+    <script src="{% static 'node_modules/popper.js/dist/umd/popper.min.js' %}"></script>
+    <script src="{% static 'node_modules/bootstrap/dist/js/bootstrap.min.js' %}"></script>
+</body>
+</html>

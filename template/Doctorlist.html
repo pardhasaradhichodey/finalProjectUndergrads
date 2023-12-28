@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+  {% load static %}
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="{% static 'node_modules\bootstrap\dist\css\bootstrap.min.css' %}" >
+    <link rel="stylesheet" href="{% static 'node_modules/font-awesome/css/font-awesome.min.css' %}">
+    <link rel="stylesheet" href="{% static 'node_modules/bootstrap-social/bootstrap-social.css' %}">
+  <link rel="stylesheet" href="{% static '/css/styles.css' %}">
+    <title>Dashboard</title>
+</head>
+<body>
+    <nav class="navbar navbar-dark navbar-expand-sm  fixed-top">
+        <div class="container">
+                
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#Navbar">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <a class="navbar-brand mr-auto" href="#"><img src="{% static 'img/logo.png' %}" height="41" width="41"></a>
+            <div class="collapse navbar-collapse" id="Navbar">
+                    <ul class="navbar-nav mr-auto">
+                        
+                        <li class="nav-item"><a class="nav-link" href="logout">logout</a></li>
+                    </ul>
+            </div>    
+        </div>
+    </nav>
+    <div class="container">
+      <div class="row row-content">
+          {% if res %}
+          {% for i in res %}
+          <div class="card border-primary mb-3" style="width: 18rem;">
+            <div class="card-body">
+                <p class="card-text">
+                    Name: {{ i.name }}<br>
+                    Hospital Name: {{ i.Hospital_id.Hospital_name }}
+                    Consultation Fee: {{ i.Consultation_fee }}
+                </p>
+                <form action="../DoctorConsultConfirm" method="POST">
+                    {% csrf_token %}
+                    <input type="hidden" name="date" value="{{ date }}">
+                    <input type="hidden" name="SlotId" value="{{ SlotId }}">
+                    <input type="hidden" name="doctor" value="{{ i.DoctorId }}">
+                    <button type="submit" class="btn btn-primary" >
+                        Book Now
+                    </button>
+                </form>
+            </div>
+           </div>
+           {% endfor %}
+           {% endif %}
+      </div>
+    </div>
+        
+    <script src="{% static 'node_modules/jquery/dist/jquery.slim.min.js' %}"></script>
+    <script src="{% static 'node_modules/popper.js/dist/umd/popper.min.js' %}"></script>
+    <script src="{% static 'node_modules/bootstrap/dist/js/bootstrap.min.js' %}"></script>
+</body>
+</html>

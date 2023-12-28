@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+  {% load static %}
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="{% static 'node_modules\bootstrap\dist\css\bootstrap.min.css' %}" >
+    <link rel="stylesheet" href="{% static 'node_modules/font-awesome/css/font-awesome.min.css' %}">
+    <link rel="stylesheet" href="{% static 'node_modules/bootstrap-social/bootstrap-social.css' %}">
+  <link rel="stylesheet" href="{% static '/css/styles.css' %}">
+    <title>Dashboard</title>
+</head>
+<body>
+    <nav class="navbar navbar-dark navbar-expand-sm  fixed-top">
+        <div class="container">
+                
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#Navbar">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <a class="navbar-brand mr-auto" href="#"><img src="{% static 'img/logo.png' %}" height="41" width="41"></a>
+            <div class="collapse navbar-collapse" id="Navbar">
+                    <ul class="navbar-nav mr-auto">
+                        <li class="nav-item active"><a class="nav-link" href="dashboard"><span class="fa fa-home"></span> Dashboard</a></li>
+                        <li class="nav-item"><a class="nav-link" href="TestBook">Book a Test</a></li>
+                        <li class="nav-item"><a class="nav-link" href="logout">logout</a></li>
+                    </ul>
+            </div>    
+        </div>
+    </nav>
+    <div class="container">
+        <div class="modal fade" id="myModal">
+            <div class="modal-dialog modal-lg">
+              <div class="modal-content">
+              
+                <!-- Modal Header -->
+                <div class="modal-header">
+                  <h4 class="modal-title">Add Beneficiaries</h4>
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                
+                <!-- Modal body -->
+                <div class="modal-body">
+                  <form action="addBene" method="POST">
+                    {% csrf_token %}
+                    <div class="form-group row">
+                        <label for="firstname" class="col-md-4 col-form-label">Full Name</label>
+                        <div class="col-md-8 ">
+                            <input type="text" class="form-control" id="name" name="name" placeholder="Full Name" required>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="firstname" class="col-md-4 col-form-label">Relation to user:</label>
+                        <div class="col-md-8 ">
+                            <select class="form-select" name="reltouser">
+                                <option value="Self">Self</option>
+                                <option value="father">Father</option>
+                                <option value="mother">Mother</option>
+                                <option value="sibling">Sibling</option>
+                                <option value="friend">Friend</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="firstname" class="col-md-4 col-form-label">Age</label>
+                        <div class="col-md-8 ">
+                            <input type="number" class="form-control" id="age" name="age" placeholder="Age" required>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-4 col-form-label">Gender</label>
+                        <div class="col-md-8 ">
+                            <select class="form-select" name="Gender">
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="offset-md-2 col-md-10">
+                            <button type="submit" class="btn btn-primary" >
+                                Add
+                            </button>
+                        </div> 
+                    </div>
+                  </form>
+                </div>
+                
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+                
+              </div>
+            </div>
+        </div>
+        <div class="row row-content1">
+            <div class="col-12 col-sm-6">
+               <h4>Hi {{ res.name }} </h4> <br>
+                <a href="#DocConsult">Doctor Consultations</a>
+            </div>
+            <div class="col-12 col-sm-6">
+                <h2>Beneficiaries List</h2>
+                {% if res1 %}
+                {% for i in res1 %}
+                <div class="row">
+                    <div class="col-12 col-sm-6">
+                         {{ i.name }} - {{ i.RelToUser }}
+                    </div>
+                </div>
+                {% endfor %}
+                {% else %}
+                <p>No Beneficiaries!!</p>
+                {% endif %}
+                <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#myModal">Add Beneficiaries</button>
+                
+            </div>
+        </div>
+        <h3>Upcoming Tests/Reports Yet to be Generated</h3>
+        <div class="row">
+            {% if upcoming %}
+            {% for i in upcoming %}
+            <div class="col-12 col-sm-4">
+            <div class="card border-primary mb-3" style="width: 18rem;">
+                <div class="card-body">
+                  
+                  <p class="card-text">Name: {{ i.BeneId.name }}
+                      <br>
+                      Center: {{ i.TestId.CentreId.name }}
+                  test Name : {{ i.TestId.TestId.name }}
+                <br>
+                    Date of Test: {{ i.DateOfTest }}
+                <br> 
+                </p> 
+                </div>
+              </div>
+            </div>
+            {% endfor %}
+            {% else %}
+            <div class="col-11 offset-md-2">
+                <h3 class="danger">No Tests Available. <a href="TestBook">Book Here</a></h3>
+            </div>
+            
+            {% endif %}   
+        </div>
+        <h3>Reports Available</h3>
+        <div class="row row-content">
+                {% if tests %}
+                {% for i in tests%}
+                <div class="col-12 col-sm-4">
+                <div class="card border-primary mb-3" style="width: 18rem;">
+                    <div class="card-body">
+                      
+                      <p class="card-text">Name: {{ i.BeneId.name }}
+                          <br>
+                      test Name : {{ i.TestId.TestId.name }}
+                    <br>
+                        Date of Test: {{ i.DateOfTest }}
+                    <br> Status: {% if i.status %} <span style="color: red;font-size: large;"> Covid</span>{% else %} <span style="color: green;font-size: large;"> Negative</span>{% endif %}
+                    </p>
+                    <form action="viewReport" method="POST">
+                        {% csrf_token %}
+                        <input type="hidden" name="slotId" value="{{ i.SlotId }}">
+                        <button type="submit" class="btn btn-primary" >
+                            View Detailed Report
+                        </button>
+                    </form>  
+                    </div>
+                  </div>
+                </div>
+                {% endfor %}
+                {% endif %}   
+        </div>
+        <h3 id="DocConsult">Doctor Consultations</h3>
+        <div class="row row-content">
+            
+            {% if doctor %}
+            {% for i in doctor %}
+            <div class="col-12 col-sm-4">
+                <div class="card border-primary mb-3" style="width: 18rem;">
+                    <div class="card-body">
+                      
+                      <p class="card-text">
+                          Beneficiary Name: {{ i.slotId.BeneId.name }}<br>
+                          Doctor Name: {{ i.Doctor_Id.name }}<br>
+                          Date: {{ i.ConsultDate }}
+                      </p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+    <script src="{% static 'node_modules/jquery/dist/jquery.slim.min.js' %}"></script>
+    <script src="{% static 'node_modules/popper.js/dist/umd/popper.min.js' %}"></script>
+    <script src="{% static 'node_modules/bootstrap/dist/js/bootstrap.min.js' %}"></script>
+</body>
+</html>

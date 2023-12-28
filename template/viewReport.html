@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+  {% load static %}
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="{% static 'node_modules\bootstrap\dist\css\bootstrap.min.css' %}" >
+    <link rel="stylesheet" href="{% static 'node_modules/font-awesome/css/font-awesome.min.css' %}">
+    <link rel="stylesheet" href="{% static 'node_modules/bootstrap-social/bootstrap-social.css' %}">
+  <link rel="stylesheet" href="{% static '/css/styles.css' %}">
+    <title>Dashboard</title>
+</head>
+<body>
+    <nav class="navbar navbar-dark navbar-expand-sm  fixed-top">
+        <div class="container">
+                
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#Navbar">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <a class="navbar-brand mr-auto" href="#"><img src="{% static 'img/logo.png' %}" height="41" width="41"></a>
+            <div class="collapse navbar-collapse" id="Navbar">
+                    <ul class="navbar-nav mr-auto">
+                        <li class="nav-item active"><a class="nav-link" href="dashboard"><span class="fa fa-home"></span> Dashboard</a></li>
+                        <li class="nav-item"><a class="nav-link" href="TestBook">Book a Test</a></li>
+                        <li class="nav-item"><a class="nav-link" href="DoctorConsultation">Consult Doctor</a></li>
+                        <li class="nav-item"><a class="nav-link" href="logout">logout</a></li>
+                    </ul>
+            </div>    
+        </div>
+    </nav>
+    <div class="container">
+      <div class="row row-content">
+          <div class="col-12 col-sm-6">
+              Name: {{ data.BeneId.name }} <br>
+              OP Number: {{ data.SlotId }}
+              Date of Test:  {{ data.DateOfTest }}
+              Status: {% if data.status %} <span style="color: red;font-size: large;"> Covid</span>{% else %} <span style="color: green;font-size: large;"> Negative</span>{% endif %}
+          </div>
+          <div class="col-12 col-sm-6">
+              <img src="{{ x }}" height="300px" width="300px" />
+          </div>
+      </div>
+      <div class="row">
+        <div class="col-12 col-sm-6">
+            {% if data.status %}
+               <p class="text-danger"><b>You're tested positive. How Serious is your situation? If Critical Book a ward at your nearest hospital. If mild take an online doctor consultation.</b></p>
+               <div class="row">
+                
+                   <div class="col-md-7">
+                    <button class="btn btn-primary"><a style="color: white;" href="{% url 'DoctorConsultation' data.SlotId %}">Doctor Consultation Online</a></button>
+                  
+                   </div>
+               </div>
+               
+                
+            {% endif %}
+        </div>
+        </div>
+
+      </div>
+        
+    <script src="{% static 'node_modules/jquery/dist/jquery.slim.min.js' %}"></script>
+    <script src="{% static 'node_modules/popper.js/dist/umd/popper.min.js' %}"></script>
+    <script src="{% static 'node_modules/bootstrap/dist/js/bootstrap.min.js' %}"></script>
+</body>
+</html>

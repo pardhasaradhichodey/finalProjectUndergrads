@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+  {% load static %}
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="{% static 'node_modules\bootstrap\dist\css\bootstrap.min.css' %}" >
+    <link rel="stylesheet" href="{% static 'node_modules/font-awesome/css/font-awesome.min.css' %}">
+    <link rel="stylesheet" href="{% static 'node_modules/bootstrap-social/bootstrap-social.css' %}">
+  <link rel="stylesheet" href="{% static '/css/styles.css' %}">
+    <title>Book a Test</title>
+    <script>
+        function transfer(){
+            alert('hi');
+            x=document.getElementById('beneid').value;
+            alert(x);
+            n=document.getElementsByName('bene').length;
+            for(var i=0;i<n;i++){
+                document.getElementsByName('bene')[i].value=x;
+            }
+            
+            alert(document.getElementsByName('bene')[0].value)
+            return true;
+        }
+    </script>
+</head>
+<body>
+    <nav class="navbar navbar-dark navbar-expand-sm  fixed-top">
+        <div class="container">
+                
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#Navbar">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <a class="navbar-brand mr-auto" href="#"><img src="{% static 'img/logo.png' %}" height="41" width="41"></a>
+            <div class="collapse navbar-collapse" id="Navbar">
+                    <ul class="navbar-nav mr-auto">
+                        <li class="nav-item"><a class="nav-link" href="./dashboard"><span class="fa fa-home"></span> Dashboard</a></li>
+                        <li class="nav-item"><a class="nav-link active" href="#">Book a Test</a></li>
+                        <li class="nav-item"><a class="nav-link" href="logout">logout</a></li>
+                    </ul>
+            </div>    
+        </div>
+    </nav>
+    <div class="container">
+        <br><br>
+        <h4>Select Beneficiary: 
+            <select id="beneid">
+                {% if bene %}
+                {% for i in bene %}
+                <option value="{{ i.BenId }}">{{ i.name }}  Relation: {{ i.RelToUser }}</option>
+                {% endfor %}
+                {% endif %}
+            </select></h4>
+        <div class="row row-content">
+                
+                {% if centers %}
+                {% for i in centers %}
+                <div class="col-12 col-sm-6">
+                <div class="card border-primary mb-3" style="width: 18rem;">
+                    <div class="card-body">
+                      <h5 class="card-title">{{ i.0.CentreId.name }}</h5>
+                      <p class="card-text">Available Slots: {{ i.1 }}
+                          <br>
+                      Price : {{ i.0.Price }}</p>
+                      <form onsubmit="return transfer()" action="TestBookSuccess" method="POST">
+                        {% csrf_token %}
+                          <input type="hidden" name="bene">
+                          <input type="hidden" name="TestId" value="{{ i.0.TOId }}">
+                          <input type="hidden" name="date" value="{{ date }}">
+                          <button type="submit" class="btn btn-primary" >
+                            Register
+                          </button>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+                {% endfor %}
+                {% else %}
+                <p>Try Another Date</p>
+                {% endif %}
+            
+        </div>
+    </div>
+    <script src="{% static 'node_modules/jquery/dist/jquery.slim.min.js' %}"></script>
+    <script src="{% static 'node_modules/popper.js/dist/umd/popper.min.js' %}"></script>
+    <script src="{% static 'node_modules/bootstrap/dist/js/bootstrap.min.js' %}"></script>
+</body>
+</html>
